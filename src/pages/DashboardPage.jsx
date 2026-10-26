@@ -1,26 +1,26 @@
+import ProductCard from "../components/ProductCard";
+
 function DashboardPage({ products, loading }) {
 
     return (
-      <div className="dashboard-page">
-        <h1 className="text-3xl font-bold text-indigo-700">SMI Dashboard</h1>
-        <h2>Katalog Produk</h2>
+        <main className="dashboard">
+            <div className="dashboard-page">
+                <h1 className="text-3xl font-bold text-indigo-700">SMI Dashboard</h1>
+                <h2>Katalog Produk</h2>
 
-        {loading ? (
-          <p>Memuat produk...</p>
-        ) : ( products.length === 0 ? (
-            <p>Belum ada produk yang tersedia.</p>
-        ) : (
-            <div className="product-list">
-                {products.map((product) => (
-                    <article key={product.id} className="product-card">
-                        <img src={product.thumbnail} alt={product.title} />
-                        <h3>{product.title}</h3>
-                        <p>{product.price}</p>
-                    </article>
+                {loading ? (
+                <p>Memuat produk...</p>
+                ) : ( products.length === 0 ? (
+                    <p>Belum ada produk yang tersedia.</p>
+                ) : (
+                    <div className="product-list">
+                        {products.map((product) => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
+                    </div>
                 ))}
             </div>
-        ))}
-      </div>
+        </main>
     );
 }
 
