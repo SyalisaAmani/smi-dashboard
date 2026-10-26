@@ -1,7 +1,9 @@
+import { useState } from "react";
 import Navbar from "../components/NavBar";
 import ProductCard from "../components/ProductCard";
 
 function DashboardPage({ products, loading, onLogout }) {
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     return (
         <main className="dashboard">
@@ -12,7 +14,7 @@ function DashboardPage({ products, loading, onLogout }) {
                 ) : ( products.length === 0 ? (
                     <p>Belum ada produk yang tersedia.</p>
                 ) : (
-                    <div className="product-list">
+                    <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {products.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
