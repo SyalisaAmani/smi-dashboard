@@ -49,11 +49,18 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  // Tampilan aplikasi
+  // Fungsi logout
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUsername('');
+    setPassword('');
+    setErrorMessage('');
+  };
+
   return (
     <div>
       {isLoggedIn ? (
-        <DashboardPage products={products} loading={loading} />
+        <DashboardPage products={products} loading={loading} onLogout={handleLogout} />
       ) : (
         <LoginPage
           username={username}

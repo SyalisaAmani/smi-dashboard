@@ -1,12 +1,12 @@
 import Navbar from "../components/NavBar";
 import ProductCard from "../components/ProductCard";
 
-function DashboardPage({ products, loading }) {
+function DashboardPage({ products, loading, onLogout }) {
 
     return (
         <main className="dashboard">
             <div className="dashboard-page">
-                <Navbar />
+                <Navbar onLogout={onLogout} />
                 {loading ? (
                 <p>Memuat produk...</p>
                 ) : ( products.length === 0 ? (
