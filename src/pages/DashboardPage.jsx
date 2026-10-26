@@ -1,3 +1,4 @@
+import Navbar from "../components/NavBar";
 import ProductCard from "../components/ProductCard";
 
 function DashboardPage({ products, loading }) {
@@ -5,9 +6,7 @@ function DashboardPage({ products, loading }) {
     return (
         <main className="dashboard">
             <div className="dashboard-page">
-                <h1 className="text-3xl font-bold text-indigo-700">SMI Dashboard</h1>
-                <h2>Katalog Produk</h2>
-
+                <Navbar />
                 {loading ? (
                 <p>Memuat produk...</p>
                 ) : ( products.length === 0 ? (
