@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/NavBar";
 import ProductCard from "../components/ProductCard";
-import { Search } from "lucide-react";
+import { Search, ArrowUp } from "lucide-react";
 
 function DashboardPage({ products, loading, productError, onLogout }) {
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -26,6 +26,18 @@ function DashboardPage({ products, loading, productError, onLogout }) {
             window.removeEventListener("keydown", handleKeyDown);
         };
     }, [selectedProduct]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setShowBackToTop(window.scrollY > 300);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     return (
         <main className="dashboard">
@@ -142,6 +154,17 @@ function DashboardPage({ products, loading, productError, onLogout }) {
                     </div>
                 )}
             </div>
+
+            {showBackToTop && (
+            <button
+                type="button"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                aria-label="Kembali ke atas"
+                className="fixed bottom-6 right-6 z-40 rounded-full bg-red-900 p-3 text-white shadow-lg transition duration-200 hover:bg-red-950 hover:shadow-xl active:scale-90"
+            >
+                <ArrowUp size={20} />
+            </button>
+            )}
         </main>
     );
 }
