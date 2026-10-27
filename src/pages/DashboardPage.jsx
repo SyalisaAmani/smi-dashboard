@@ -40,7 +40,7 @@ function DashboardPage({ products, loading, productError, onLogout }) {
     }, []);
 
     return (
-        <main className="dashboard">
+        <main className="dashboard min-h-screen bg-[#F8F1F2]">
             <div className="dashboard-page">
                 <Navbar onLogout={onLogout} />
 
