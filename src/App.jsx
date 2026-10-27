@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
+import { getProducts } from './services/ProductService';
 
 function App() {
   // State login
@@ -12,11 +13,19 @@ function App() {
   // Get data produk
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [productError, setProductError] = useState('');
 
   // Fungsi validasi login
   const checkLogin = () => {
+    if (!username.trim() || !password.trim()) {
+      setErrorMessage("Username dan password wajib diisi");
+      return;
+    }
+    
     if (username === "admin" && password === "smi123") {
       setErrorMessage('');
+      setProductError('');
+      setLoading(true);
       setIsLoggedIn(true);
     } else {
       setErrorMessage('Username atau password salah');
@@ -24,43 +33,52 @@ function App() {
   };
 
   // Fecth data produk dari API
-  const fetchProducts = async () => {
-    setLoading(true);
+  useEffect(() => {
+  if (!isLoggedIn) return;
+
+  let ignored = false;
+
+  const loadProducts = async () => {
     try {
-      const response = await fetch('https://dummyjson.com/products');
+      const productsData = await getProducts();
 
-      if (!response.ok) {
-        throw new Error('Gagal mengambil data produk');
-      }
+      if (ignored) return;
 
-      const data = await response.json();
-      console.log('Data produk:',data.products);
-      setProducts(data.products);
+      setProducts(productsData);
     } catch (error) {
+      if (ignored) return;
+
       console.error(error);
+      setProductError('Gagal mengambil data produk');
     } finally {
-      setLoading(false);
+      if (!ignored) {
+        setLoading(false);
+      }
     }
   };
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      fetchProducts();
-    }
-  }, [isLoggedIn]);
+  loadProducts();
+
+  return () => {
+    ignored = true;
+  };
+}, [isLoggedIn]);
 
   // Fungsi logout
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setProducts([]);
+    setLoading(false);
     setUsername('');
     setPassword('');
     setErrorMessage('');
+    setProductError('');
   };
 
   return (
     <div>
       {isLoggedIn ? (
-        <DashboardPage products={products} loading={loading} onLogout={handleLogout} />
+        <DashboardPage products={products} loading={loading} productError={productError} onLogout={handleLogout} />
       ) : (
         <LoginPage
           username={username}

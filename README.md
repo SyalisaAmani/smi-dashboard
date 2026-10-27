@@ -1,21 +1,94 @@
-<<<<<<< HEAD
-# React + Vite
+# SMI Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplikasi dashboard katalog produk berbasis React.js yang menggunakan REST API untuk menampilkan data produk secara responsif.
 
-Currently, two official plugins are available:
+## Fitur Utama
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Login menggunakan kredensial demo.
+- Menampilkan daftar produk dari DummyJSON API.
+- Loading state dan penanganan error API.
+- Validasi struktur data produk.
+- Kartu produk dengan informasi harga dan deskripsi.
+- Modal untuk melihat detail produk.
+- Navbar sticky dengan tombol logout.
+- Tampilan responsif untuk desktop, tablet, dan mobile.
 
-## React Compiler
+## Teknologi
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React.js
+- JavaScript
+- Vite
+- Tailwind CSS
+- Lucide React
+- Fetch API
+- DummyJSON REST API
 
-## Expanding the ESLint configuration
+## Demo Login
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-=======
-# smi-dashboard
-React-based product dashboard featuring a login interface, product data fetching from DummyJSON API, and responsive UI.
->>>>>>> 36fa23d26b0bab369b9c9a863684fdedefda6e14
+- Username: `admin`
+- Password: `smi123`
+
+> Catatan: Kredensial tersebut hanya untuk demonstrasi dan bukan sistem autentikasi produksi.
+
+## API
+
+Data produk diambil dari:
+
+https://dummyjson.com/products
+
+## Cara Menjalankan Proyek
+
+1. Clone repository:
+
+   ```bash
+   git clone URL_REPOSITORY_KAMU
+   ```
+
+2. Masuk ke direktori proyek:
+
+   ```bash
+   cd NAMA_FOLDER_PROYEK
+   ```
+
+3. Instal dependensi:
+
+   ```bash
+   npm install
+   ```
+
+4. Jalankan aplikasi:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Buka URL lokal yang ditampilkan di terminal.
+
+## Struktur Proyek
+
+```text
+src/
+├── components/
+│   ├── NavBar.jsx
+│   └── ProductCard.jsx
+├── pages/
+│   ├── LoginPage.jsx
+│   └── DashboardPage.jsx
+├── services/
+│   └── ProductService.js
+├── App.jsx
+├── App.css
+├── index.css
+└── main.jsx
+```
+
+## Catatan Implementasi
+
+- State login dan pengambilan data dikelola melalui React Hooks.
+- Komponen dipisahkan agar kode lebih terstruktur dan dapat digunakan kembali.
+- Pengambilan data API dipisahkan ke dalam service.
+- Antarmuka menggunakan Tailwind CSS untuk styling responsif.
+
+## Status
+
+Fitur utama telah diuji secara manual melalui alur login, pengambilan produk, detail produk, responsivitas, dan logout.

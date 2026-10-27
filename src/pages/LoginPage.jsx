@@ -27,6 +27,7 @@ function LoginPage({
                     placeholder="Masukkan username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    required
                 />
                 </div>
                 
@@ -39,10 +40,18 @@ function LoginPage({
                     placeholder="Masukkan password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
                 </div>
                 
-                {errorMessage && <p className="error">{errorMessage}</p>}
+                {errorMessage && (
+                    <div
+                        role="alert"
+                        className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+                    >
+                        {errorMessage}
+                    </div>
+                )}
                 <button className="mt-4 w-full rounded-lg bg-red-900 px-4 py-3 font-semibold text-white shadow-md transition duration-200 hover:bg-red-800 hover:shadow-lg active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-red-900 focus:ring-offset-2" type="submit">Login</button>
             </form>
             <p className="mt-4 text-gray-400 text-xs mb-6 text-center">Demo Credentials: admin / smi123</p>
