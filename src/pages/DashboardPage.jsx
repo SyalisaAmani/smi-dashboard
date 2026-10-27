@@ -57,6 +57,13 @@ function DashboardPage({ products, loading, productError, onLogout }) {
                         <p className="mt-1 text-sm text-gray-500">
                             Coba gunakan kata kunci lain.
                         </p>
+                        <button
+                        type="button"
+                        onClick={() => setSearchTerm('')}
+                        className="mt-5 rounded-xl bg-red-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-red-950 active:scale-95"
+                        >
+                        Kembali ke Semua Produk
+                        </button>
                     </div>
                 ) : (
                     <div>
