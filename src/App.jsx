@@ -1,84 +1,91 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useRef, useCallback } from 'react';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import { getProducts } from './services/ProductService';
+import { useLoginService } from './services/LoginService';
 
 function App() {
-  // State login
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [password, setPassword] = useState('');
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    errorMessage,
+    isLoggedIn,
+    checkLogin,
+    handleLogout,
+  } = useLoginService();
 
-  // Get data produk
+  // State data produk
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [productError, setProductError] = useState('');
 
-  // Fungsi validasi login
-  const checkLogin = () => {
-    if (!username.trim() || !password.trim()) {
-      setErrorMessage("Username dan password wajib diisi");
-      return;
-    }
-    
-    if (username === "admin" && password === "smi123") {
-      setErrorMessage('');
-      setProductError('');
-      setLoading(true);
-      setIsLoggedIn(true);
-    } else {
-      setErrorMessage('Username atau password salah');
-    }
-  };
+  // Penanda untuk mengabaikan request yang sudah tidak berlaku
+  const requestIdRef = useRef(0);
 
-  // Fecth data produk dari API
-  useEffect(() => {
-  if (!isLoggedIn) return;
+  // Fungsi untuk mengambil data produk
+  const loadProducts = useCallback(async () => {
+    const currentRequestId = ++requestIdRef.current;
 
-  let ignored = false;
+    setLoading(true);
+    setProductError('');
 
-  const loadProducts = async () => {
     try {
       const productsData = await getProducts();
 
-      if (ignored) return;
+      if (currentRequestId !== requestIdRef.current) return;
 
       setProducts(productsData);
     } catch (error) {
-      if (ignored) return;
+      if (currentRequestId !== requestIdRef.current) return;
 
       console.error(error);
-      setProductError('Gagal mengambil data produk');
+      setProductError(
+        error instanceof Error
+          ? error.message
+          : 'Terjadi kesalahan saat mengambil data produk'
+      );
     } finally {
-      if (!ignored) {
+      if (currentRequestId === requestIdRef.current) {
         setLoading(false);
       }
     }
-  };
+  }, []);
 
-  loadProducts();
+  // Memuat produk ketika pengguna sudah login
+  useEffect(() => {
+    if (!isLoggedIn) return;
 
-  return () => {
-    ignored = true;
-  };
-}, [isLoggedIn]);
+    loadProducts();
 
-  // Fungsi logout
-  const handleLogout = () => {
-    setIsLoggedIn(false);
+    return () => {
+      requestIdRef.current += 1;
+    };
+  }, [isLoggedIn, loadProducts]);
+
+  // Menangani logout aplikasi
+  const handleAppLogout = () => {
+    // Membatalkan validitas request yang sedang berjalan
+    requestIdRef.current += 1;
+
     setProducts([]);
-    setLoading(false);
-    setUsername('');
-    setPassword('');
-    setErrorMessage('');
     setProductError('');
+    setLoading(false);
+
+    handleLogout();
   };
 
   return (
     <div>
       {isLoggedIn ? (
-        <DashboardPage products={products} loading={loading} productError={productError} onLogout={handleLogout} />
+        <DashboardPage
+          products={products}
+          loading={loading}
+          productError={productError}
+          onLogout={handleAppLogout}
+        />
       ) : (
         <LoginPage
           username={username}

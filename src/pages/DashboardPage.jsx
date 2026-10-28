@@ -12,8 +12,7 @@ function DashboardPage({ products, loading, productError, onLogout }) {
 
     useEffect(() => {
         const handleKeyDown = (event) => {
-            if (event.key === "Escape" || event.key === "Enter") {
-                 event.preventDefault();
+            if (event.key === "Escape") {
                 setSelectedProduct(null);
             }
         };
